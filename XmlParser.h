@@ -30,6 +30,11 @@ namespace WXML
 			: _root(root)
 		{ }
 
+		shared_ptr<XmlNode> root() const
+		{
+			return _root;
+		}
+
 	public:
 		string version, encoding;
 
@@ -54,6 +59,8 @@ namespace WXML
 		enum class TraverseCharState
 		{
 			Normal, // normal state
+			GetName, // normal state to get name
+			GetAttribute, // get attribute
 			InSingleQuotation, // meet single quotation
 			InDoubleQuotation, // meet double quotation
 		};
@@ -65,6 +72,7 @@ namespace WXML
 
 		// parse single element
 		shared_ptr<XmlNode> parseElement(const string_view& boby, size_t& pos);
+		string parseElementContent(const string_view& boby, size_t& pos);
 	private:
 		static std::once_flag _initFlag;
 		static shared_ptr<XmlParser> _instance;
